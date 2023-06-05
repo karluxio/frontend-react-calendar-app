@@ -11,6 +11,8 @@ section frontend of MERN
   for manipulating JavaScript dates in a browser & Node.js.
 - ### react-modal: [npm - react-modal](https://www.npmjs.com/package/react-modal)
   Accessible modal dialog component for React.JS
+- ### react-datepicker: [npm - react-modal](https://www.npmjs.com/package/react-datepicker)
+  Accessible modal dialog component for React.JS
 
 after clone run:
 
