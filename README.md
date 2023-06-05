@@ -12,7 +12,7 @@ section frontend of MERN
 - ### react-modal: [npm - react-modal](https://www.npmjs.com/package/react-modal)
   Accessible modal dialog component for React.JS
 - ### react-datepicker: [npm - react-modal](https://www.npmjs.com/package/react-datepicker)
-  Accessible modal dialog component for React.JS
+  A simple and reusable Datepicker component for React
 
 after clone run:
 
