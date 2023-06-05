@@ -9,6 +9,8 @@ section frontend of MERN
 - ### date-fns: [npm - date-nfs](https://www.npmjs.com/package/date-fns)
   date-fns provides the most comprehensive, yet simple and consistent toolset
   for manipulating JavaScript dates in a browser & Node.js.
+- ### react-modal: [npm - react-modal](https://www.npmjs.com/package/react-modal)
+  Accessible modal dialog component for React.JS
 
 after clone run:
 
