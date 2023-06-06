@@ -13,6 +13,8 @@ section frontend of MERN
   Accessible modal dialog component for React.JS
 - ### react-datepicker: [npm - react-modal](https://www.npmjs.com/package/react-datepicker)
   A simple and reusable Datepicker component for React
+- ### sweet-alert2: [npm - sweetalert2](https://www.npmjs.com/package/sweetalert2/v/6.6.1?activeTab=readme)
+  A beautiful, responsive, customizable, accessible (WAI-ARIA) replacement for JavaScript's popup boxes. Zero dependencies.
 
 after clone run:
 
