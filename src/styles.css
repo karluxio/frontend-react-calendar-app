@@ -46,4 +46,16 @@
   padding: 25px;
   position: fixed;
   right: 25px;
+  z-index: 100;
+}
+
+.fab-delete {
+  border-radius: 100%;
+  bottom: 25px;
+  font-size: 30px;
+  left: 25px;
+  width: 75px;
+  height: 75px;
+  position: fixed;
+  z-index: 100;
 }
