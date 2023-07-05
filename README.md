@@ -15,6 +15,8 @@ section frontend of MERN
   A simple and reusable Datepicker component for React
 - ### sweet-alert2: [npm - sweetalert2](https://www.npmjs.com/package/sweetalert2/v/6.6.1?activeTab=readme)
   A beautiful, responsive, customizable, accessible (WAI-ARIA) replacement for JavaScript's popup boxes. Zero dependencies.
+- ### axios: [npm - axios](https://www.npmjs.com/package/axios)
+  Promise based HTTP client for the browser and node.js
 
 ### Development steps after clone:
 
