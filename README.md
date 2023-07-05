@@ -16,7 +16,16 @@ section frontend of MERN
 - ### sweet-alert2: [npm - sweetalert2](https://www.npmjs.com/package/sweetalert2/v/6.6.1?activeTab=readme)
   A beautiful, responsive, customizable, accessible (WAI-ARIA) replacement for JavaScript's popup boxes. Zero dependencies.
 
-after clone run:
+### Development steps after clone:
+
+1. cd to folder
+2. rename .env.template to .env and add correct values. Example:
+
+```
+VITE_URL_API=http://localhost:4000/api
+```
+
+3. run:
 
 ```sh
 pnpm i
