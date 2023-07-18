@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import calendarApi from "../api/calendarApi"
-import { clearErrorMessage, onChecking, onLogout } from "../store"
+import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store"
 
 export const useAuthStore = () => {
 
@@ -27,15 +27,35 @@ export const useAuthStore = () => {
     }
   }
 
+  const startRegister = async ({ email, password, name }) => {
+
+    dispatch(onChecking())
+
+    try {
+
+      const { data } = await calendarApi.post('/auth/new', { email, password, name })
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('token-init-date', new Date().getTime())
+      console.log({ uid: data.uid, name: data.name });
+      dispatch(onLogin({ uid: data.uid, name: data.name }))
+
+    } catch (error) {
+      dispatch(onLogout(error.response.data?.msg || '--'))
+      setTimeout(() => {
+        dispatch(clearErrorMessage())
+      }, 10);
+    }
+  }
+
 
   return {
     //* Properties
     errorMessage,
-    ifError: !!errorMessage,
     status,
     user,
 
     //* Methods
-    startLogin
+    startLogin,
+    startRegister
   }
 }
