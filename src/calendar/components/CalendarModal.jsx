@@ -70,7 +70,7 @@ export const CalendarModal = () => {
     const difference = differenceInSeconds(formValues.end, formValues.start)
 
     if (isNaN(difference) || difference <= 0) {
-      Swal('fechas incorrectas', 'revisar fechas', 'error').catch(e => e)
+      Swal('invalid dates', 'check dates', 'error').catch(e => e)
       return
     }
 

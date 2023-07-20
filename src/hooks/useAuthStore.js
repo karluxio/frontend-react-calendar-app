@@ -1,14 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
 import calendarApi from "../api/calendarApi"
 import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store"
-import { useNavigate } from "react-router-dom"
 
 export const useAuthStore = () => {
 
   const dispatch = useDispatch()
   const { status, user, errorMessage } = useSelector(state => state.auth)
 
-  const navigate = useNavigate()
   const startLogin = async ({ email, password }) => {
 
     dispatch(onChecking())
@@ -70,8 +68,6 @@ export const useAuthStore = () => {
   const startLogout = () => {
     localStorage.clear()
     dispatch(onLogout())
-    dispatch(clearErrorMessage())
-    navigate('/auth/login')
   }
 
 
