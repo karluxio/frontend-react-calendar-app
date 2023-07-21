@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Calendar } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 
@@ -6,11 +6,15 @@ import { CalendarEvent, CalendarModal, FabAddNew, FabDelete, Navbar } from "../"
 
 import { localizer, getMessages } from '../../helpers'
 import { useCalendarStore, useUiStore } from '../../hooks'
-import { useEffect } from 'react'
 
 export const CalendarPage = () => {
 
   const { events, setActiveEvent, startLoadingEvents } = useCalendarStore()
+
+  useEffect(() => {
+    startLoadingEvents()
+    console.log({ events })
+  }, [])
 
   const { openDateModal } = useUiStore()
 
@@ -28,12 +32,10 @@ export const CalendarPage = () => {
   }
 
   const onDoubleClickEvent = () => {
-    // console.log({ onDoubleClickEvent: event });
     openDateModal()
   }
 
   const onSelectEvent = (event) => {
-    // console.log({ onSelectEvent: event });
     setActiveEvent(event)
   }
 
@@ -41,11 +43,6 @@ export const CalendarPage = () => {
     localStorage.setItem("lastView", event)
     setLastView(event)
   }
-
-  useEffect(() => {
-    startLoadingEvents()
-  }, [])
-
 
   return (
     <>

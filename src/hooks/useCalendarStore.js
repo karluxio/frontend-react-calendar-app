@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux"
-import { getUnixTime } from 'date-fns'
+import { parseISO } from 'date-fns'
 import { onAddNewEvent, onDeleteEvent, onLoadEvents, onSetActiveEvent, onUpdateEvent } from "../store"
 import calendarApi from "../api/calendarApi"
 import { convertEventDateToJsDate } from "../helpers/convertEventDateToJsDate"
+import Swal from "sweetalert2"
 
 export const useCalendarStore = () => {
 
@@ -16,32 +17,50 @@ export const useCalendarStore = () => {
 
   const startSavingEvent = async (calendarEvent) => {
 
-    if (calendarEvent._id) {
-      dispatch(onUpdateEvent({ ...calendarEvent }))
-    } else {
+    const parsedStart = new Date(calendarEvent.start).getTime()
+    const parsedEnd = new Date(calendarEvent.end).getTime()
+
+    // if exists then update
+    if (calendarEvent.id) {
 
       try {
-
-        const startUnix = getUnixTime(calendarEvent.start)
-        const endUnix = getUnixTime(calendarEvent.end)
-
-        const { data } = await calendarApi.post(
-          '/events',
-          {
-            ...calendarEvent,
-            start: startUnix,
-            end: endUnix
-          }
-        )
-
-        console.log({ data })
-        dispatch(onAddNewEvent({ ...calendarEvent, id: data.savedEvent.id, user }))
+        await calendarApi.put(`/events/${calendarEvent.id}`, {
+          ...calendarEvent,
+          start: parsedStart,
+          end: parsedEnd
+        })
+        dispatch(onUpdateEvent({ ...calendarEvent, user }))
+        return
 
       } catch (error) {
-        console.log({ error })
+        console.log({ error });
         Swal('Error', error.response.data.msg, 'error')
       }
+
     }
+
+
+    // if not exists then create
+    try {
+      const { data } = await calendarApi.post(
+        '/events',
+        {
+          ...calendarEvent,
+          start: parsedStart,
+          end: parsedEnd,
+
+        }
+      )
+
+      console.log({ data });
+
+      dispatch(onAddNewEvent({ ...calendarEvent, id: data.savedEvent.id, user }))
+
+    } catch (error) {
+      console.log({ error })
+      Swal('Error', error.response.data.msg, 'error')
+    }
+
   }
 
   const startDeletingEvent = (calendarEvent) => {
@@ -53,6 +72,8 @@ export const useCalendarStore = () => {
 
       const { data } = await calendarApi.get('/events')
       const parsedEvents = convertEventDateToJsDate(data.events)
+
+      console.log({ parsedEvents })
       dispatch(onLoadEvents(parsedEvents))
 
     } catch (error) {
@@ -60,7 +81,6 @@ export const useCalendarStore = () => {
       Swal('Error', error.response.data.msg, 'error')
     }
   }
-
 
   return {
     //* Properties

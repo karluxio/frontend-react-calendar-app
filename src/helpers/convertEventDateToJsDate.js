@@ -1,11 +1,10 @@
-import { parseISO } from "date-fns"
-
 export const convertEventDateToJsDate = (events = []) => {
+
   return events.map(event => {
-    return {
-      ...event,
-      start: parseISO(event.start),
-      end: parseISO(event.end)
-    }
+
+    event.start = new Date(event.start)
+    event.end = new Date(event.end)
+
+    return event;
   })
 }
