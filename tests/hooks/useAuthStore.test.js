@@ -3,7 +3,11 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { authSlice, store } from "../../src/store";
 import { useAuthStore } from "../../src/hooks/useAuthStore";
-import { initialState, notAuthenticatedState } from "../fixtures/authState";
+import {
+  authenticatedState,
+  initialState,
+  notAuthenticatedState,
+} from "../fixtures/authState";
 import { act } from "@testing-library/react";
 import { testUserCredentials } from "../fixtures/testUser";
 import calendarApi from "../../src/api/calendarApi";
@@ -166,5 +170,74 @@ describe("useAuthStore", () => {
     await waitFor(() => {
       expect(result.current.errorMessage).toBeUndefined();
     });
+  });
+
+  it("check auth token failed", async () => {
+    const mockStore = getMockStore({ ...initialState });
+
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => (
+        <Provider store={mockStore}>{children}</Provider>
+      ),
+    });
+
+    await act(async () => {
+      await result.current.checkAuthToken();
+    });
+
+    expect(localStorage.getItem("token")).toBeNull();
+
+    const { errorMessage, user, status } = result.current;
+    expect({ errorMessage, user, status }).toEqual({
+      errorMessage: undefined,
+      user: {},
+      status: "not-authenticated",
+    });
+  });
+
+  it("check auth token success", async () => {
+    const { data } = await calendarApi.post("/auth", testUserCredentials);
+
+    localStorage.setItem("token", data.token);
+
+    const mockStore = getMockStore({ ...initialState });
+
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => (
+        <Provider store={mockStore}>{children}</Provider>
+      ),
+    });
+
+    await act(async () => {
+      await result.current.checkAuthToken();
+    });
+
+    expect(localStorage.getItem("token")).toBeDefined();
+    expect(localStorage.getItem("token-init-date")).toBeDefined();
+
+    const { errorMessage, user, status } = result.current;
+
+    expect({ errorMessage, user, status }).toEqual({
+      errorMessage: undefined,
+      user: { uid: testUserCredentials.uid, name: testUserCredentials.name },
+      status: "authenticated",
+    });
+  });
+
+  it("should logout", () => {
+    const mockStore = getMockStore({ ...authenticatedState });
+
+    const { result } = renderHook(() => useAuthStore(), {
+      wrapper: ({ children }) => (
+        <Provider store={mockStore}>{children}</Provider>
+      ),
+    });
+
+    act(() => {
+      result.current.startLogout();
+    });
+
+    expect(localStorage.getItem("token")).toBeNull();
+    expect(localStorage.getItem("token-init-date")).toBeNull();
   });
 });
