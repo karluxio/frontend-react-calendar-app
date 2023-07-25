@@ -1,5 +1,5 @@
-import { current } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import { current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 // import { addHours } from 'date-fns';
 
 // const tempEvent = {
@@ -16,52 +16,52 @@ import { createSlice } from '@reduxjs/toolkit';
 // };
 
 export const calendarSlice = createSlice({
-  name: 'calendar',
+  name: "calendar",
   initialState: {
     isLoadingEvents: true,
     events: [
       // tempEvent
     ],
-    activeEvent: null
+    activeEvent: null,
   },
   reducers: {
     onSetActiveEvent: (state, action) => {
-      state.activeEvent = action.payload
+      state.activeEvent = action.payload;
     },
     onAddNewEvent: (state, { payload }) => {
-      state.events.push(payload)
-      state.activeEvent = null
+      state.events.push(payload);
+      state.activeEvent = null;
     },
     onUpdateEvent: (state, { payload }) => {
-      state.events = state.events.map(event => (event.id === payload.id) ? payload : event)
-      state.activeEvent = null
+      state.events = state.events.map((event) =>
+        event.id === payload.id ? payload : event
+      );
+      state.activeEvent = null;
     },
     onDeleteEvent: (state) => {
       if (state.activeEvent) {
-        state.events = state.events.filter(event => event.id !== state.activeEvent.id)
-        state.activeEvent = null
+        state.events = state.events.filter(
+          (event) => event.id !== state.activeEvent.id
+        );
+        state.activeEvent = null;
       }
     },
     onLoadEvents: (state, { payload }) => {
-      state.isLoadingEvents = false
+      state.isLoadingEvents = false;
 
-      payload.forEach(event => {
+      payload.forEach((event) => {
+        const exists = state.events.some((dbEvent) => dbEvent.id === event.id);
 
-        const exists = state.events.some(
-          dbEvent => dbEvent.id === event.id
-        )
-
-        if (!exists) state.events.push(event)
-
-      })
+        if (!exists) state.events.push(event);
+      });
     },
 
     onLogoutCalendar: (state) => {
-      state.isLoadingEvents = true
-      state.events = []
-      state.activeEvent = null
-    }
-  }
+      state.isLoadingEvents = true;
+      state.events = [];
+      state.activeEvent = null;
+    },
+  },
 });
 
 // Action creators are generated for each case reducer function
